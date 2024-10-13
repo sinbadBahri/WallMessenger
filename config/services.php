@@ -34,5 +34,14 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    # These are For the Messenger Settings
+    'inboxino' => [
+        'api_token' => env('INBOXINO_API_TOKEN'),
+        'url'       => env('INBOXINO_URL'),
+    ],
+
+    'wallmessage' => [
+        'url' => env('WALLMESSAGE_URL'),
+    ],
 
 ];
