@@ -13,7 +13,6 @@ class CleanupSentNumbersCommand extends Command
      * @var string
      */
     protected $signature = 'cleanup:sent-numbers';
-//    protected $signature = 'app:cleanup-sent-numbers-command';
 
     /**
      * The console command description.

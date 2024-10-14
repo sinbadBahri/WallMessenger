@@ -36,13 +36,15 @@ class MessageService
     protected $apiToken;
     protected $inboxinoUrl;
     protected $wallMessageUrl;
+    protected $wallSendingMessageUrl;
 
     public function __construct(Client $client)
     {
-        $this->client               = $client;
-        $this->apiToken             = config('services.inboxino.api_token'); // Store tokens in config or env
-        $this->inboxinoUrl          = config('services.inboxino.url');
-        $this->wallMessageUrl       = config('services.wallmessage.url');
+        $this->client                = $client;
+        $this->apiToken              = config('services.inboxino.api_token'); // Store tokens in config or env
+        $this->inboxinoUrl           = config('services.inboxino.url');
+        $this->wallMessageUrl        = config('services.wallmessage.url');
+        $this->wallSendingMessageUrl = config('services.wallmessage_send_message.url');
     }
 
     /**
@@ -50,6 +52,26 @@ class MessageService
      */
     public function sendMessage(string $mobileNumber, string $answerMessage): array
     {
+
+//        # WallMessage Sending Protocol
+//        $data = [
+//            'mobile'  => $mobileNumber,
+//            'chatId'  => '98' . substr($mobileNumber, 1) . '@c.us',
+//            'message' => $answerMessage,
+//        ];
+//
+//        $response = Http::withHeaders([
+//            'accept'       => 'application/json',
+//            'Content-Type' => 'application/json',
+//        ])->post($this->wallSendingMessageUrl, $data);
+//
+//        if ($response->successful()) {
+//            return $response->json();
+//        } else {
+//            return ['error' => 'Failed to send message', 'status' => $response->status()];
+//        }
+
+        # Inboxino Sending Protocol
         $requestData = $this->buildMessageRequestData($mobileNumber, $answerMessage);
 
         try {

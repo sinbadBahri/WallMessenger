@@ -10,13 +10,10 @@ use Illuminate\Http\JsonResponse;
 class MessengerController extends Controller
 {
     protected MessageService $messageService;
-//    protected DelayedMessageService $delayedMessageService;
 
-    public function __construct(MessageService $messageService,
-                                DelayedMessageService  $delayedMessageService)
+    public function __construct(MessageService $messageService)
     {
         $this->messageService = $messageService;
-//        $this->delayedMessageService = $delayedMessageService;
     }
 
     /**
@@ -41,7 +38,6 @@ class MessengerController extends Controller
 
         $responseData = $this->messageService->readMessages($chatID, $mobileNumber);
         if ($this->isMessageValid($responseData, $request->input('specificMessage'))) {
-//            $this->delayedMessageService->sendDelayedMessages($mobileNumber);
             return $this->sendReply($mobileNumber, $request->input('answerMessage'));
         }
 

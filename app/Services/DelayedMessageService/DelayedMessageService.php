@@ -22,12 +22,12 @@ class DelayedMessageService
      */
     public function sendDelayedMessages(string $mobileNumber): void
     {
-        # Schedule "Where are you?" message to be sent after 15 minutes
-        SendDelayedMessage::dispatch($mobileNumber, "Where are you ?")
-            ->delay(now()->addMinutes(4));
+        # Schedule "Where are you?" message to be sent after 5 minutes
+        SendDelayedMessage::dispatch($mobileNumber, "چیشد پس ؟")
+            ->delay(now()->addMinutes(5));
 
         # Schedule "You forgot your Discount?" message to be sent after 2 hours
-        SendDelayedMessage::dispatch($mobileNumber, "You forgot your Discount ?")
+        SendDelayedMessage::dispatch($mobileNumber, "تخفیف رو فراموش کردی...")
             ->delay(now()->addHours(2));
     }
 }

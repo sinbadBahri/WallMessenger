@@ -26,7 +26,7 @@ const sendFollowUpMessages = () => {
 
             <!-- Introduction message -->
             <h1 class="intro-text mb-4">Welcome to Our Service</h1>
-            <p class="lead mb-4">Example text that explains what your service is about. Make it short and compelling.</p>
+            <p class="lead mb-4">This is a Messenger Service created by FuadKH :)</p>
 
             <!-- Navigation buttons/links -->
             <div class="button-group">

@@ -44,4 +44,8 @@ return [
         'url' => env('WALLMESSAGE_URL'),
     ],
 
+    'wallmessage_send_message' => [
+        'url' => env('WALLMESSAGE_SENDMESSAGE_URL'),
+    ],
+
 ];
