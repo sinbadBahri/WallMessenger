@@ -2,6 +2,7 @@
 
 namespace App\Services\FollowUpService;
 
+use App\Models\AlreadySentNumber;
 use App\Services\MessageService\MessageService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
@@ -48,7 +49,9 @@ class FollowUpService
 
     private function convertChatIdsToNumbers(array $chatIds): array
     {
-        return array_map(fn($chatId) => str_replace('98', '0', str_replace('@c.us', '', $chatId)), $chatIds);
+        return array_map(fn($chatId) => str_replace(
+            '98', '0', str_replace('@c.us', '', $chatId)), $chatIds
+        );
     }
 
     private function getUsersToFollowUp(array $numbers, array $chatIds): array
@@ -74,9 +77,18 @@ class FollowUpService
 
     private function sendFollowUpMessages(array $mustFollowUpUsers): array
     {
+        $sentNumbers = [];
+
         if (empty($mustFollowUpUsers)) {
             Log::info("No users to follow up with.");
             return ['success' => true, 'message' => 'Chats have been checked. No users to follow up with.'];
+        }
+
+        foreach ($mustFollowUpUsers as $phoneNumber) {
+            # Checks if the number has already been sent a message
+            if ($this->hasAlreadySent($phoneNumber)) {
+                Log::info("Message to $phoneNumber already sent. Skipping...");
+            }
         }
 
         foreach ($mustFollowUpUsers as $mobileNumber) {
@@ -85,12 +97,27 @@ class FollowUpService
 
             if ($response['success']) {
                 Log::info("Message sent to $mobileNumber successfully.");
+                $sentNumbers[] = $mobileNumber;
             } else {
                 Log::error("Failed to send message to $mobileNumber: " . $response['error']);
             }
         }
 
+        $this->saveSentNumbers($sentNumbers);
+
         return ['success' => true, 'message' => 'Follow up messages sent.'];
+    }
+
+    private function hasAlreadySent(string $mobileNumber): bool
+    {
+        return AlreadySentNumber::where('mobile_number', $mobileNumber)->exists();
+    }
+
+    private function saveSentNumbers(array $sentNumbers): void
+    {
+        foreach ($sentNumbers as $mobileNumber) {
+            AlreadySentNumber::create(['mobile_number' => $mobileNumber]);
+        }
     }
 
     private function setFollowUpMessage(): void
