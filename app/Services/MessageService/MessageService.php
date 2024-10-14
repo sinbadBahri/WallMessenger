@@ -2,6 +2,7 @@
 
 namespace App\Services\MessageService;
 
+use App\Services\ErrorHandlingService\ErrorHandlingService;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 
@@ -38,10 +39,10 @@ class MessageService
 
     public function __construct(Client $client)
     {
-        $this->client = $client;
-        $this->apiToken = config('services.inboxino.api_token'); // Store tokens in config or env
-        $this->inboxinoUrl = config('services.inboxino.url');
-        $this->wallMessageUrl = config('services.wallmessage.url');
+        $this->client               = $client;
+        $this->apiToken             = config('services.inboxino.api_token'); // Store tokens in config or env
+        $this->inboxinoUrl          = config('services.inboxino.url');
+        $this->wallMessageUrl       = config('services.wallmessage.url');
     }
 
     /**
@@ -54,7 +55,7 @@ class MessageService
         try {
             $response = $this->client->post($this->inboxinoUrl, [
                 'headers' => $this->getCommonHeaders(),
-                'json' => $requestData
+                'json'    => $requestData
             ]);
 
             return $this->handleResponse($response, 'Message sent successfully.');
@@ -90,12 +91,12 @@ class MessageService
     /**
      * Reads messages using WallMessage API
      */
-    public function readMessages(string $chatID, string $mobileNumber): ?array
+    public function readMessages(string $chatID, string $mobileNumber, int $total = 1)
     {
         $data = [
             'chatId'     => $chatID,
             'mobile'     => $mobileNumber,
-            'total'      => 1,
+            'total'      => $total,
             'ignoreData' => true,
         ];
 
@@ -113,7 +114,7 @@ class MessageService
             }
 
         } catch (\Exception $exception) {
-            return  $this->handleException($exception, 'Specified message did not match');
+            return  $this->handleException($exception, 'Failed to read messages.');
         }
     }
 

@@ -24,7 +24,7 @@ class DelayedMessageService
     {
         # Schedule "Where are you?" message to be sent after 15 minutes
         SendDelayedMessage::dispatch($mobileNumber, "Where are you ?")
-            ->delay(now()->addMinutes(15));
+            ->delay(now()->addMinutes(4));
 
         # Schedule "You forgot your Discount?" message to be sent after 2 hours
         SendDelayedMessage::dispatch($mobileNumber, "You forgot your Discount ?")

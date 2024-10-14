@@ -2,15 +2,18 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\MessengerController;
+use App\Http\Controllers\FollowUpController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [MainController::class, 'index']);
 Route::get('/form-page', [MainController::class, 'formPage'])->name('form-page');
-Route::post('/reply-message', [MainController::class, 'handleMessage']);
+Route::post('/reply-message', [MessengerController::class, 'handleMessage']);
+Route::post('/send-follow-up-message', [FollowUpController::class, 'index']);
 
-Route::get('/ali', function () {
+Route::get('/welcome', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),

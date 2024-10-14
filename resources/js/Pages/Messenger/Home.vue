@@ -1,13 +1,20 @@
 <script setup>
 import { Inertia } from '@inertiajs/inertia'; // Import Inertia for navigation
+import { Head } from '@inertiajs/vue3';
 
 // Function to navigate to the form page using GET method
 const goToFormPage = () => {
     Inertia.get('/form-page'); // Perform navigation using GET request
 };
+const sendFollowUpMessages = () => {
+    Inertia.post('/send-follow-up-message'); // Perform navigation using GET request
+};
 </script>
 
 <template>
+
+    <Head title="WallMessenger" />
+
     <div class="container-fluid home-page-container d-flex flex-column justify-content-center align-items-center">
         <div class="card text-center p-4 shadow-lg bg-white rounded">
             <!-- WhatsApp Business logo -->
@@ -25,10 +32,11 @@ const goToFormPage = () => {
             <div class="button-group">
                 <button class="btn btn-outline-success me-2">Button 1</button>
                 <button class="btn btn-outline-success me-2">Button 2</button>
-                <button class="btn btn-outline-success me-2">Button 3</button>
 
-                <!-- Button to navigate to Form Page -->
-                <button @click="goToFormPage" class="btn btn-success">Go to Form Page</button>
+                <button @click="sendFollowUpMessages" class="btn btn-outline-success me-2">Follow Up</button>
+
+                <button @click="goToFormPage" class="btn btn-outline-success me-2">Go to Reply Page</button>
+
             </div>
         </div>
     </div>
@@ -73,7 +81,7 @@ body {
 .button-group {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     margin-top: 20px;
 }
 
@@ -86,15 +94,5 @@ body {
 .btn-outline-success:hover {
     background-color: #28a745;
     color: #fff;
-}
-
-.btn-success {
-    background-color: #28a745;
-    border: none;
-    transition: all 0.3s ease-in-out;
-}
-
-.btn-success:hover {
-    background-color: #218838;
 }
 </style>
